@@ -42,6 +42,10 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     positionSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
     positionSlider.setLookAndFeel(customLookAndFeel);
 
+    volDialLabel.setJustificationType(Justification::centred);
+    speedDialLabel.setJustificationType(Justification::centred);
+    positionDialLabel.setJustificationType(Justification::centred);
+
     playButton.addListener(this);
     stopButton.addListener(this);
     loadButton.addListener(this);
@@ -97,8 +101,11 @@ void DeckGUI::resized()
     waveformDisplay.setBounds(0, rowH * 2, getWidth(), rowH);
 
     volSlider.setBounds(0, rowH * 3, getWidth() / 3, rowH * 3);
+    volDialLabel.setBounds(0, rowH * 4, getWidth() / 3, rowH);
     speedSlider.setBounds(getWidth() / 3, rowH * 3, getWidth() / 3, rowH * 3);
+    speedDialLabel.setBounds(getWidth() / 3, rowH * 4, getWidth() / 3, rowH);
     positionSlider.setBounds(getWidth() / 3 * 2, rowH * 3, getWidth() / 3, rowH * 3);
+    positionDialLabel.setBounds(getWidth() / 3 * 2, rowH * 4, getWidth() / 3, rowH);
 
     loadButton.setBounds(0, rowH * 6, getWidth(), rowH);
 
