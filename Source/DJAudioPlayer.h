@@ -1,0 +1,46 @@
+/*
+  ==============================================================================
+
+    DJAudioPlayer.h
+    Created: 11 Feb 2024 11:24:39pm
+    Author:  miyuki
+
+  ==============================================================================
+*/
+
+#pragma once
+#include <JuceHeader.h>
+
+class DJAudioPlayer : public juce::AudioSource
+{
+public:
+    // Constructor
+    DJAudioPlayer(AudioFormatManager& format_manager);
+	// Destructor
+    ~DJAudioPlayer() override;
+
+    // Must-have methods for AudioSource
+    void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
+    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override;
+    void releaseResources() override;
+
+
+    // Custom methods
+    void loadURL(const juce::URL& audioURL);
+    void setGain(float newGain);
+    void setSpeed(float newSpeedRatio);
+    void setPosition(float newPositionSecs);
+    void setPositionRelative(float newPositionRatio);
+
+    void start();
+    void stop();
+
+    double getPositionRelative() const;
+
+
+private:
+    AudioFormatManager& formatManager;
+    std::unique_ptr<AudioFormatReaderSource> readerSource;
+    AudioTransportSource transportSource;
+    ResamplingAudioSource resampleSource{ &transportSource, false, 2 };
+};
