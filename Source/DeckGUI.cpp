@@ -12,7 +12,7 @@
 #include "DeckGUI.h"
 
 //==============================================================================
-DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, AudioThumbnailCache* thumbnail_cache)
+DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, AudioThumbnailCache* thumbnail_cache, LookAndFeel* customLookAndFeel)
 			: audioPlayer(player),
               waveformDisplay(format_manager, thumbnail_cache)
 {
@@ -24,10 +24,23 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     addAndMakeVisible(loadButton);
 
     addAndMakeVisible(volSlider);
+    addAndMakeVisible(volDialLabel);
     addAndMakeVisible(speedSlider);
+    addAndMakeVisible(speedDialLabel);
     addAndMakeVisible(positionSlider);
+    addAndMakeVisible(positionDialLabel);
 
     addAndMakeVisible(waveformDisplay);
+
+    volSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    volSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
+    volSlider.setLookAndFeel(customLookAndFeel);
+    speedSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    speedSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
+    speedSlider.setLookAndFeel(customLookAndFeel);
+    positionSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    positionSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
+    positionSlider.setLookAndFeel(customLookAndFeel);
 
     playButton.addListener(this);
     stopButton.addListener(this);
@@ -37,7 +50,10 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     positionSlider.addListener(this);
 
     volSlider.setRange(0.0, 1.0);
+    volSlider.setSkewFactor(0.5);   // make it easier to set lower values
+    volSlider.setValue(0.1);
     speedSlider.setRange(0.0, 2.0);
+    speedSlider.setValue(1.0);
     positionSlider.setRange(0.0, 1.0);
 
 
@@ -80,9 +96,9 @@ void DeckGUI::resized()
 
     waveformDisplay.setBounds(0, rowH * 2, getWidth(), rowH);
 
-    volSlider.setBounds(0, rowH * 3, getWidth(), rowH);
-    speedSlider.setBounds(0, rowH * 4, getWidth(), rowH);
-    positionSlider.setBounds(0, rowH * 5, getWidth(), rowH);
+    volSlider.setBounds(0, rowH * 3, getWidth() / 3, rowH * 3);
+    speedSlider.setBounds(getWidth() / 3, rowH * 3, getWidth() / 3, rowH * 3);
+    positionSlider.setBounds(getWidth() / 3 * 2, rowH * 3, getWidth() / 3, rowH * 3);
 
     loadButton.setBounds(0, rowH * 6, getWidth(), rowH);
 

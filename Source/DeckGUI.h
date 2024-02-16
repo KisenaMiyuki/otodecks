@@ -25,7 +25,7 @@ class DeckGUI  : public juce::Component,
 				 public juce::Timer
 {
 public:
-    DeckGUI(DJAudioPlayer* player, AudioFormatManager* format_manager, AudioThumbnailCache* thumbnail_cache);
+    DeckGUI(DJAudioPlayer* player, AudioFormatManager* format_manager, AudioThumbnailCache* thumbnail_cache, LookAndFeel* customLookAndFeel);
     ~DeckGUI() override;
 
     void paint (juce::Graphics&) override;
@@ -51,8 +51,11 @@ private:
     TextButton loadButton{ "LOAD" };
 
     Slider volSlider;
+    Label volDialLabel{ "volDialLabel", "Volume" };
     Slider speedSlider;
+    Label speedDialLabel{ "speedDialLabel", "Speed" };
     Slider positionSlider;
+    Label positionDialLabel{ "positionDialLabel", "Position" };
 
     WaveformDisplay waveformDisplay;
 

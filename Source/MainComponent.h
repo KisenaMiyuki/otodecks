@@ -15,6 +15,19 @@
 #include "PlaylistComponent.h"
 
 
+// Custom LookAndFeel class
+class CustomLookAndFeel : public LookAndFeel_V4
+{
+public:
+	CustomLookAndFeel()
+	{
+		setColour(Slider::thumbColourId, Colours::orange);
+		setColour(Slider::rotarySliderFillColourId, Colours::black);
+		setColour(Slider::rotarySliderOutlineColourId, Colours::darkgrey);
+	}
+};;
+
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -41,6 +54,9 @@ private:
     //==============================================================================
     // Your private member variables go here...
 
+    // Custom LookAndFeel
+    CustomLookAndFeel customLookAndFeel;
+
     // For audio thumbnail
     AudioFormatManager formatManager;
     AudioThumbnailCache thumbnailCache{50};
@@ -59,8 +75,8 @@ private:
     DJAudioPlayer player1{formatManager};
     DJAudioPlayer player2{formatManager};
 
-    DeckGUI deck1{ &player1, &formatManager, &thumbnailCache };
-    DeckGUI deck2{ &player2, &formatManager, &thumbnailCache };
+    DeckGUI deck1{ &player1, &formatManager, &thumbnailCache, &customLookAndFeel };
+    DeckGUI deck2{ &player2, &formatManager, &thumbnailCache, &customLookAndFeel };
 
     MixerAudioSource mixer;
 
