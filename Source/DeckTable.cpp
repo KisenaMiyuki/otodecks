@@ -22,6 +22,8 @@ DeckTable::DeckTable()
     deckTable.getHeader().addColumn("Column 1", 1, 100);
     deckTable.getHeader().setStretchToFitActive(true);
 
+    deckTable.setRowHeight(150);
+
     deckTable.setModel(this);
 
 }
