@@ -13,7 +13,7 @@ MainComponent::MainComponent()
 {
     // Make sure you set the size of the component after
     // you add any child components.
-    setSize (800, 600);
+    setSize (1000, 600);
 
     // Some platforms require permissions to open input channels so request that here
     if (RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
@@ -28,9 +28,9 @@ MainComponent::MainComponent()
         setAudioChannels (0, 2);
     }
 
-    // addAndMakeVisible(deck1);
-    // addAndMakeVisible(deck2);
-    addAndMakeVisible(deckTable);
+    addAndMakeVisible(deck1);
+    addAndMakeVisible(deck2);
+    // addAndMakeVisible(deckTable);
 
     // formatManager for waveform thumbnail
     formatManager.registerBasicFormats();
@@ -87,9 +87,9 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
 
-    // deck1.setBounds(0, 0, getWidth() / 2, getHeight() * 0.6);
-    // deck2.setBounds(getWidth() / 2, 0, getWidth() / 2, getHeight() * 0.6);
-	deckTable.setBounds(0, 0, getWidth(), getHeight() * 0.6);
+    deck1.setBounds(0, 0, getWidth(), getHeight() * 0.3);
+    deck2.setBounds(0, getHeight() * 0.3, getWidth(), getHeight() * 0.3);
+	// deckTable.setBounds(0, 0, getWidth(), getHeight() * 0.6);
 
     playlist.setBounds(0, getHeight() * 0.6, getWidth(), getHeight() * 0.4);
 

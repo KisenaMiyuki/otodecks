@@ -95,20 +95,20 @@ void DeckGUI::resized()
     // components that your component contains..
 
     const double rowH = getHeight() / 7;
-    playButton.setBounds(0, 0, getWidth(), rowH);
-    stopButton.setBounds(0, rowH, getWidth(), rowH);
+    constexpr int buttonWidthPx = 40;
 
-    waveformDisplay.setBounds(0, rowH * 2, getWidth(), rowH);
+    loadButton.setBounds(0, 0, buttonWidthPx, getHeight());
+    playButton.setBounds(buttonWidthPx, 0, buttonWidthPx, getHeight() / 2);
+    stopButton.setBounds(buttonWidthPx, getHeight() / 2, buttonWidthPx, getHeight() / 2);
 
-    volSlider.setBounds(0, rowH * 3, getWidth() / 3, rowH * 3);
-    volDialLabel.setBounds(0, rowH * 4, getWidth() / 3, rowH);
-    speedSlider.setBounds(getWidth() / 3, rowH * 3, getWidth() / 3, rowH * 3);
-    speedDialLabel.setBounds(getWidth() / 3, rowH * 4, getWidth() / 3, rowH);
-    positionSlider.setBounds(getWidth() / 3 * 2, rowH * 3, getWidth() / 3, rowH * 3);
-    positionDialLabel.setBounds(getWidth() / 3 * 2, rowH * 4, getWidth() / 3, rowH);
+    volSlider.setBounds(buttonWidthPx * 2, 0, buttonWidthPx * 2, getHeight() / 2);
+    // volDialLabel.setBounds(0, rowH * 4, getWidth() / 3, rowH);
+    speedSlider.setBounds(buttonWidthPx * 2, getHeight() / 2, buttonWidthPx * 2, getHeight() / 2);
+    // speedDialLabel.setBounds(getWidth() / 3, rowH * 4, getWidth() / 3, rowH);
+    positionSlider.setBounds(buttonWidthPx * 4, 0, buttonWidthPx * 2, getHeight() / 2);
+    // positionDialLabel.setBounds(getWidth() / 3 * 2, rowH * 4, getWidth() / 3, rowH);
 
-    loadButton.setBounds(0, rowH * 6, getWidth(), rowH);
-
+    waveformDisplay.setBounds(buttonWidthPx * 6, 0, getWidth() - buttonWidthPx * 6, getHeight());
 }
 
 

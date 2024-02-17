@@ -1,4 +1,4 @@
-/*
+﻿/*
   ==============================================================================
 
     DeckGUI.h
@@ -46,9 +46,9 @@ public:
 
 private:
 
-    TextButton playButton{ "PLAY" };
-    TextButton stopButton{ "STOP" };
-    TextButton loadButton{ "LOAD" };
+    TextButton playButton{ "P" };
+    TextButton stopButton{ "S" };
+    TextButton loadButton{ "L" };
 
     Slider volSlider;
     Label volDialLabel{ "volDialLabel", "Volume" };
