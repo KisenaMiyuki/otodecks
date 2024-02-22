@@ -28,9 +28,9 @@ MainComponent::MainComponent()
         setAudioChannels (0, 2);
     }
 
-    // addAndMakeVisible(deck1);
-    // addAndMakeVisible(deck2);
-    addAndMakeVisible(deckTable);
+    addAndMakeVisible(deck1);
+    addAndMakeVisible(deck2);
+    // addAndMakeVisible(deckTable);
 
     // formatManager for waveform thumbnail
     formatManager.registerBasicFormats();
@@ -87,11 +87,14 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
 
-    // deck1.setBounds(0, 0, getWidth(), getHeight() * 0.3);
-    // deck2.setBounds(0, getHeight() * 0.3, getWidth(), getHeight() * 0.3);
-	deckTable.setBounds(0, 0, getWidth(), getHeight() * 0.6);
+    const double topHalf = getHeight() * 0.7;
+    const double lowHalf = getHeight() * 0.3;
 
-    playlist.setBounds(0, getHeight() * 0.6, getWidth(), getHeight() * 0.4);
+    deck1.setBounds(0, 0, getWidth(), topHalf / 2);
+    deck2.setBounds(0, topHalf / 2, getWidth(), topHalf / 2);
+	// deckTable.setBounds(0, 0, getWidth(), getHeight() * 0.6);
+
+    playlist.setBounds(0, getHeight() - lowHalf, getWidth(), lowHalf);
 
 }
 
