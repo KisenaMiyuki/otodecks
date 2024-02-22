@@ -46,9 +46,9 @@ public:
 
 private:
 
-    TextButton playButton{ "P" };
-    TextButton stopButton{ "S" };
-    TextButton loadButton{ "L" };
+    TextButton playButton{ "PLAY" };
+    TextButton stopButton{ "STOP" };
+    TextButton loadButton{ "LOAD" };
 
     Slider volSlider;
     Label volDialLabel{ "volDialLabel", "Volume" };

@@ -33,13 +33,13 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     addAndMakeVisible(waveformDisplay);
 
     volSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    volSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
+    volSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
     volSlider.setLookAndFeel(customLookAndFeel);
     speedSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    speedSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
+    speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
     speedSlider.setLookAndFeel(customLookAndFeel);
     positionSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    positionSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 80, 14);
+    positionSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
     positionSlider.setLookAndFeel(customLookAndFeel);
 
     volDialLabel.setJustificationType(Justification::centred);
@@ -94,21 +94,22 @@ void DeckGUI::resized()
     // This method is where you should set the bounds of any child
     // components that your component contains..
 
-    const double rowH = getHeight() / 7;
-    constexpr int buttonWidthPx = 40;
+    const double buttonHeight = getHeight() / 3;
+    constexpr int buttonWidthPx = 100;
+    constexpr int dialWidthPx = 120;
 
-    loadButton.setBounds(0, 0, buttonWidthPx, getHeight());
-    playButton.setBounds(buttonWidthPx, 0, buttonWidthPx, getHeight() / 2);
-    stopButton.setBounds(buttonWidthPx, getHeight() / 2, buttonWidthPx, getHeight() / 2);
+    playButton.setBounds(0, 0, buttonWidthPx, buttonHeight);
+    stopButton.setBounds(0, buttonHeight, buttonWidthPx, buttonHeight);
+    loadButton.setBounds(0, buttonHeight * 2, buttonWidthPx, buttonHeight);
 
-    volSlider.setBounds(buttonWidthPx * 2, 0, buttonWidthPx * 2, getHeight() / 2);
+    volSlider.setBounds(buttonWidthPx, 0, dialWidthPx, getHeight() / 2);
     // volDialLabel.setBounds(0, rowH * 4, getWidth() / 3, rowH);
-    speedSlider.setBounds(buttonWidthPx * 2, getHeight() / 2, buttonWidthPx * 2, getHeight() / 2);
+    speedSlider.setBounds(buttonWidthPx, getHeight() / 2, dialWidthPx, getHeight() / 2);
     // speedDialLabel.setBounds(getWidth() / 3, rowH * 4, getWidth() / 3, rowH);
-    positionSlider.setBounds(buttonWidthPx * 4, 0, buttonWidthPx * 2, getHeight() / 2);
+    positionSlider.setBounds(buttonWidthPx + dialWidthPx, 0, dialWidthPx, getHeight() / 2);
     // positionDialLabel.setBounds(getWidth() / 3 * 2, rowH * 4, getWidth() / 3, rowH);
 
-    waveformDisplay.setBounds(buttonWidthPx * 6, 0, getWidth() - buttonWidthPx * 6, getHeight());
+    waveformDisplay.setBounds(buttonWidthPx + dialWidthPx * 2, 0, getWidth() - buttonWidthPx - dialWidthPx * 2, getHeight());
 }
 
 
