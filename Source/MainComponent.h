@@ -10,23 +10,11 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "CustomLookAndFeel.h"
 #include "DJAudioPlayer.h"
 #include "DeckTable.h"
 #include "DeckGUI.h"
 #include "PlaylistComponent.h"
-
-
-// Custom LookAndFeel class
-class CustomLookAndFeel : public LookAndFeel_V4
-{
-public:
-	CustomLookAndFeel()
-	{
-		setColour(Slider::thumbColourId, Colours::orange);
-		setColour(Slider::rotarySliderFillColourId, Colours::black);
-		setColour(Slider::rotarySliderOutlineColourId, Colours::darkgrey);
-	}
-};;
 
 
 //==============================================================================
