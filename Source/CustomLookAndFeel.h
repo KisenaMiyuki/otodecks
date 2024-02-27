@@ -14,5 +14,9 @@
 class CustomLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
+    // Constructor
+    CustomLookAndFeel();
+
+    // Override the drawRotarySlider method
     void drawRotarySlider(Graphics&, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider&) override;
 };
