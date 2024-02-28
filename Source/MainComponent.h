@@ -12,7 +12,6 @@
 
 #include "CustomLookAndFeel.h"
 #include "DJAudioPlayer.h"
-#include "DeckTable.h"
 #include "DeckGUI.h"
 #include "PlaylistComponent.h"
 
@@ -58,8 +57,6 @@ private:
     Slider volSlider; 
     Slider speedSlider;
     Slider positionSlider;
-
-    DeckTable deckTable;
 
 
     // Audio
