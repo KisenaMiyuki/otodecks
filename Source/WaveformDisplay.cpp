@@ -43,7 +43,7 @@ void WaveformDisplay::paint (juce::Graphics& g)
     if (fileLoaded)
 	{
         // draw waveform
-		g.setColour(juce::Colours::orange);
+		g.setColour(findColour(Slider::rotarySliderFillColourId));
 		thumbnail.drawChannel(g, getLocalBounds(), 0.0, thumbnail.getTotalLength(), 0, 1.0f);
 
         // draw play head
