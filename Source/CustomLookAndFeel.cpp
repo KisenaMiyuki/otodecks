@@ -30,7 +30,7 @@ CustomLookAndFeel::CustomLookAndFeel()
     // Set the colours for the buttons
     setColour(TextButton::buttonColourId, foregroundColour);
     setColour(TextButton::buttonOnColourId, Colour::Colour(0, 0, 0));
-    setColour(TextButton::textColourOffId, Colour::Colour(0, 0, 0));
+    setColour(TextButton::textColourOffId, Colour::Colour(backgroundColour));
     setColour(TextButton::textColourOnId, Colour::Colour(255, 255, 255));
 
     // Set the colours for the labels
