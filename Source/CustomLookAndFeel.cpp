@@ -15,10 +15,12 @@ CustomLookAndFeel::CustomLookAndFeel()
     // Colors
     const Colour backgroundColour = Colour::Colour(218, 218, 218);
     const Colour foregroundColour = Colour::Colour(56, 56, 58);
+    const Colour accentColour = Colour::Colour(185, 139, 247);
 
 
     // Set the general background colour
 	setColour(ResizableWindow::backgroundColourId, backgroundColour);
+    setColour(HyperlinkButton::textColourId, accentColour);             // Random colour id to hold the accent colour
 
 	// Set the colours for the slider
 	setColour(Slider::rotarySliderFillColourId, foregroundColour);
@@ -119,30 +121,47 @@ void CustomLookAndFeel::drawRotarySlider(Graphics& g, int x, int y, int width, i
 }
 
 void CustomLookAndFeel::drawButtonBackground(Graphics& g,
-										     Button& button,
-										     const Colour& backgroundColour,
-										     bool shouldDrawButtonAsHighlighted,
-										     bool shouldDrawButtonAsDown)
+                                             Button& button,
+                                             const Colour& backgroundColour,
+                                             bool shouldDrawButtonAsHighlighted,
+                                             bool shouldDrawButtonAsDown)
 {
-    auto cornerSize = 6.0f;
+    // Button background corner size
+    const auto cornerSize = 0.0f;
+
+    // Button strip color
+    auto stripColour = getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId);
+
+    // Get the button's local bounds and reduce it by 0.5f on both dimensions
     auto bounds = button.getLocalBounds().toFloat().reduced(0.5f, 0.5f);
 
+    // Modify the background colour based on whether the button has keyboard focus and whether it is enabled
     auto baseColour = backgroundColour.withMultipliedSaturation(button.hasKeyboardFocus(true) ? 1.3f : 0.9f)
         .withMultipliedAlpha(button.isEnabled() ? 1.0f : 0.5f);
 
+    // If the button is down or highlighted, contrast the base colour
     if (shouldDrawButtonAsDown || shouldDrawButtonAsHighlighted)
-        baseColour = baseColour.contrasting(shouldDrawButtonAsDown ? 0.2f : 0.05f);
+    {
+        baseColour = baseColour.darker(0.3f);
+        stripColour = (shouldDrawButtonAsDown) ? getDefaultLookAndFeel().findColour(HyperlinkButton::textColourId) : stripColour;
+    }
 
+    // Set the colour for the Graphics object to the base colour
     g.setColour(baseColour);
 
-    auto flatOnLeft = button.isConnectedOnLeft();
-    auto flatOnRight = button.isConnectedOnRight();
-    auto flatOnTop = button.isConnectedOnTop();
-    auto flatOnBottom = button.isConnectedOnBottom();
+    // Check which sides of the button are connected
+    const auto flatOnLeft = button.isConnectedOnLeft();
+    const auto flatOnRight = button.isConnectedOnRight();
+    const auto flatOnTop = button.isConnectedOnTop();
+    const auto flatOnBottom = button.isConnectedOnBottom();
 
+    // If any side of the button is connected
     if (flatOnLeft || flatOnRight || flatOnTop || flatOnBottom)
     {
+        // Create a Path object
         Path path;
+
+        // Add a rounded rectangle to the path with corners rounded based on which sides are connected
         path.addRoundedRectangle(bounds.getX(), bounds.getY(),
             bounds.getWidth(), bounds.getHeight(),
             cornerSize, cornerSize,
@@ -151,16 +170,29 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g,
             !(flatOnLeft || flatOnBottom),
             !(flatOnRight || flatOnBottom));
 
+        // Fill the path with the base colour
         g.fillPath(path);
 
+        // Set the colour for the Graphics object to the outline colour of the button
         g.setColour(button.findColour(ComboBox::outlineColourId));
+
+        // Stroke the path with the outline colour
         g.strokePath(path, PathStrokeType(1.0f));
     }
     else
     {
+        // If no sides of the button are connected, fill a rounded rectangle with the base colour
         g.fillRoundedRectangle(bounds, cornerSize);
 
+        // Draw the strip
+        const auto stripBounds = bounds.removeFromBottom(button.getHeight() * 0.3).removeFromTop(bounds.getHeight() * 0.1).reduced(button.getWidth() * 0.2, 0);
+        g.setColour(stripColour);
+        g.fillRoundedRectangle(stripBounds, stripBounds.getHeight() / 2);
+
+        // Set the colour for the Graphics object to the outline colour of the button
         g.setColour(button.findColour(ComboBox::outlineColourId));
-        g.drawRoundedRectangle(bounds, cornerSize, 1.0f);
+
+        // Draw a rounded rectangle with the outline colour
+        // g.drawRoundedRectangle(bounds, cornerSize, 1.0f);
     }
 }
