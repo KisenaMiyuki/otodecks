@@ -87,6 +87,7 @@ void DeckGUI::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+
  //    g.drawRect(volSlider.getBounds(), 1);
  //    g.drawRect(volDialLabel.getBounds(), 1);
 	// g.drawRect(speedSlider.getBounds(), 1);
@@ -109,50 +110,38 @@ void DeckGUI::resized()
     constexpr int buttonWidthPx = 100;
     constexpr int dialWidthPx = 120;
     constexpr float dialLabelHeightRatio = 0.2f;
+    constexpr int buttonMargin = 8;
 
-    playButton.setBounds(0, 0, buttonWidthPx, buttonHeight);
-    stopButton.setBounds(0, buttonHeight, buttonWidthPx, buttonHeight);
-    loadButton.setBounds(0, buttonHeight * 2, buttonWidthPx, buttonHeight);
+    // Divide the area into 3 columns:   buttons, dials, waveform display
+    auto bounds = getLocalBounds();
+    auto buttonsBounds = bounds.removeFromLeft(buttonWidthPx);
+    auto dialsBounds = bounds.removeFromLeft(dialWidthPx * 2);
+    waveformDisplay.setBounds(bounds);
 
-    volSlider.setBounds(
-        buttonWidthPx, 
-        0, 
-        dialWidthPx, 
-        getHeight() / 2 * (1 - dialLabelHeightRatio * 0.5)
-    );
-    volDialLabel.setBounds(
-        buttonWidthPx, 
-        getHeight() / 2 * (1 - dialLabelHeightRatio),
-        dialWidthPx,
-        (getHeight() / 2) * dialLabelHeightRatio
-    );
-    speedSlider.setBounds(
-        buttonWidthPx, 
-        getHeight() / 2, 
-        dialWidthPx, 
-        getHeight() / 2 * (1 - dialLabelHeightRatio * 0.5)
-    );
-    speedDialLabel.setBounds(
-        buttonWidthPx, 
-        getHeight() / 2 + getHeight() / 2 * (1 - dialLabelHeightRatio),
-        dialWidthPx, 
-        getHeight() / 2 * dialLabelHeightRatio
-    );
-    positionSlider.setBounds(
-        buttonWidthPx + dialWidthPx, 
-        getHeight() / 4, 
-        dialWidthPx, 
-        getHeight() / 2 * (1 - dialLabelHeightRatio * 0.5)
-    );
-    positionDialLabel.setBounds(
-        buttonWidthPx + dialWidthPx, 
-        getHeight() / 4 + getHeight() / 2 * (1 - dialLabelHeightRatio),
-        dialWidthPx, 
-        getHeight() / 2 * dialLabelHeightRatio
-    );
+    // Each button takes one third of the height, with a margin
+    playButton.setBounds(buttonsBounds.removeFromTop(buttonHeight).reduced(buttonMargin));
+    stopButton.setBounds(buttonsBounds.removeFromTop(buttonHeight).reduced(buttonMargin));
+    loadButton.setBounds(buttonsBounds.reduced(buttonMargin));
+
+    // Divide the dials area into two equal columns
+    auto dialsFirstColumnBounds = dialsBounds.removeFromLeft(dialWidthPx);
+    auto dialsSecondColumnBounds = dialsBounds;
+
+    // Each dial takes half the height of the column
+    auto dialNum1Bounds = dialsFirstColumnBounds.removeFromTop(dialsFirstColumnBounds.getHeight() / 2);
+    auto dialNum2Bounds = dialsFirstColumnBounds;
+    // Third dial placed in the middle of the second column
+    auto dialNum3Bounds = dialsSecondColumnBounds.reduced(0, getHeight() / 4);
+
+    volSlider.setBounds(dialNum1Bounds.removeFromTop(dialNum1Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    volDialLabel.setBounds(dialNum1Bounds);
+    speedSlider.setBounds(dialNum2Bounds.removeFromTop(dialNum2Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    speedDialLabel.setBounds(dialNum2Bounds);
+    positionSlider.setBounds(dialNum3Bounds.removeFromTop(dialNum3Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    positionDialLabel.setBounds(dialNum3Bounds);
 
 
-    waveformDisplay.setBounds(buttonWidthPx + dialWidthPx * 2, 0, getWidth() - buttonWidthPx - dialWidthPx * 2, getHeight());
+    // waveformDisplay.setBounds(buttonWidthPx + dialWidthPx * 2, 0, getWidth() - buttonWidthPx - dialWidthPx * 2, getHeight());
 }
 
 
