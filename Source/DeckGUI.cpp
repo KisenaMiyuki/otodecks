@@ -85,8 +85,28 @@ void DeckGUI::paint (juce::Graphics& g)
 
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+    // g.setColour (juce::Colour(255, 0, 0));
+    // g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+
+    // Draw only corners
+    g.setColour(findColour(Slider::rotarySliderFillColourId));
+    constexpr int cornerStrokeLengthPx = 20;
+    constexpr int cornerStrokeWeightPx = 2;
+    // auto topLeftCorner = getLocalBounds().getTopLeft();
+	// auto topRightCorner = getLocalBounds().getTopRight();
+	// auto bottomLeftCorner = getLocalBounds().getBottomLeft();
+	// auto bottomRightCorner = getLocalBounds().getBottomRight();
+    g.fillRect(getLocalBounds().removeFromTop(cornerStrokeWeightPx).removeFromLeft(cornerStrokeLengthPx));
+	g.fillRect(getLocalBounds().removeFromLeft(cornerStrokeWeightPx).removeFromTop(cornerStrokeLengthPx));
+
+	g.fillRect(getLocalBounds().removeFromBottom(cornerStrokeWeightPx).removeFromLeft(cornerStrokeLengthPx));
+    g.fillRect(getLocalBounds().removeFromLeft(cornerStrokeWeightPx).removeFromBottom(cornerStrokeLengthPx));
+
+    g.fillRect(getLocalBounds().removeFromTop(cornerStrokeWeightPx).removeFromRight(cornerStrokeLengthPx));
+	g.fillRect(getLocalBounds().removeFromRight(cornerStrokeWeightPx).removeFromTop(cornerStrokeLengthPx));
+
+    g.fillRect(getLocalBounds().removeFromBottom(cornerStrokeWeightPx).removeFromRight(cornerStrokeLengthPx));
+    g.fillRect(getLocalBounds().removeFromRight(cornerStrokeWeightPx).removeFromBottom(cornerStrokeLengthPx));
 
  //    g.drawRect(volSlider.getBounds(), 1);
  //    g.drawRect(volDialLabel.getBounds(), 1);
@@ -108,15 +128,15 @@ void DeckGUI::resized()
 
     const double buttonHeight = getHeight() / 3;
     constexpr int buttonWidthPx = 100;
-    constexpr int dialWidthPx = 120;
-    constexpr float dialLabelHeightRatio = 0.2f;
+    constexpr int dialWidthPx = 100;
+    constexpr float dialLabelHeightRatio = 0.15f;
     constexpr int buttonMargin = 8;
 
     // Divide the area into 3 columns:   buttons, dials, waveform display
     auto bounds = getLocalBounds();
     auto buttonsBounds = bounds.removeFromLeft(buttonWidthPx);
     auto dialsBounds = bounds.removeFromLeft(dialWidthPx * 2);
-    waveformDisplay.setBounds(bounds);
+    waveformDisplay.setBounds(bounds.reduced(buttonMargin));
 
     // Each button takes one third of the height, with a margin
     playButton.setBounds(buttonsBounds.removeFromTop(buttonHeight).reduced(buttonMargin));
