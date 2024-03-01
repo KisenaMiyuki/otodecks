@@ -11,8 +11,9 @@
 #include "DJAudioPlayer.h"
 
 // Constructor
-DJAudioPlayer::DJAudioPlayer(AudioFormatManager& format_manager)
-	: formatManager(format_manager)
+DJAudioPlayer::DJAudioPlayer(AudioFormatManager& format_manager, Reverb& reverb)
+	: formatManager(format_manager),
+	  reverb(reverb)
 {
 };
 
@@ -29,17 +30,24 @@ void DJAudioPlayer::prepareToPlay(int samplesPerBlockExpected, double sampleRate
     resampleSource.prepareToPlay(
         samplesPerBlockExpected,
         sampleRate);
+
+    // Reverb
+    reverbSource.setParameters(reverbParameters);
+	reverbSource.prepareToPlay(
+        samplesPerBlockExpected,
+        sampleRate);
 };
 
 void DJAudioPlayer::getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill)
 {
-    resampleSource.getNextAudioBlock(bufferToFill);
+    reverbSource.getNextAudioBlock(bufferToFill);
 };
 
 void DJAudioPlayer::releaseResources()
 {
     transportSource.releaseResources();
     resampleSource.releaseResources();
+    reverbSource.releaseResources();
 };
 
 

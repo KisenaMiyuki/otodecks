@@ -60,13 +60,16 @@ private:
 
 
     // Audio
-    DJAudioPlayer player1{formatManager};
-    DJAudioPlayer player2{formatManager};
+    DJAudioPlayer player1{formatManager, reverb};
+    DJAudioPlayer player2{formatManager, reverb};
 
     DeckGUI deck1{ &player1, &formatManager, &thumbnailCache, &customLookAndFeel };
     DeckGUI deck2{ &player2, &formatManager, &thumbnailCache, &customLookAndFeel };
 
     MixerAudioSource mixer;
+
+    // Reeeeeeeeeverb
+    Reverb reverb;
 
 
     // Playlist

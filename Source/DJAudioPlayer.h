@@ -15,7 +15,7 @@ class DJAudioPlayer : public juce::AudioSource
 {
 public:
     // Constructor
-    DJAudioPlayer(AudioFormatManager& format_manager);
+    DJAudioPlayer(AudioFormatManager& format_manager, Reverb& reverb);
 	// Destructor
     ~DJAudioPlayer() override;
 
@@ -43,4 +43,8 @@ private:
     std::unique_ptr<AudioFormatReaderSource> readerSource;
     AudioTransportSource transportSource;
     ResamplingAudioSource resampleSource{ &transportSource, false, 2 };
+
+    Reverb& reverb;
+    Reverb::Parameters reverbParameters;
+    ReverbAudioSource reverbSource{ &resampleSource, false };
 };
