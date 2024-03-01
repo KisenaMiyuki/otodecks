@@ -51,11 +51,22 @@ private:
     TextButton loadButton{ "LOAD" };
 
     Slider volSlider;
-    Label volDialLabel{ "volDialLabel", "Volume" };
+    Label volDialLabel{ "volDialLabel", "VOL" };
     Slider speedSlider;
-    Label speedDialLabel{ "speedDialLabel", "Speed" };
+    Label speedDialLabel{ "speedDialLabel", "SPD" };
     Slider positionSlider;
-    Label positionDialLabel{ "positionDialLabel", "Position" };
+    Label positionDialLabel{ "positionDialLabel", "POS" };
+
+    Slider reverbRoomSizeSlider;
+	Label reverbRoomSizeLabel{ "reverbRoomSizeLabel", "RM.SZ" };
+    Slider reverbDampingSlider;
+    Label reverbDampingLabel{ "reverbDampingLabel", "DAMP" };
+    Slider reverbWetLevelSlider;
+    Label reverbWetLevelLabel{ "reverbWetLevelLabel", "WET" };
+    Slider reverbDryLevelSlider;
+    Label reverbDryLevelLabel{ "reverbDryLevelLabel", "DRY" };
+    Slider reverbWidthSlider;
+    Label reverbWidthLabel{ "reverbWidthLabel", "WDTH" };
 
     WaveformDisplay waveformDisplay;
 

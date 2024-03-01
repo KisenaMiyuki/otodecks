@@ -30,17 +30,37 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     addAndMakeVisible(positionSlider);
     addAndMakeVisible(positionDialLabel);
 
+    addAndMakeVisible(reverbRoomSizeSlider);
+    addAndMakeVisible(reverbRoomSizeLabel);
+    addAndMakeVisible(reverbDampingSlider);
+    addAndMakeVisible(reverbDampingLabel);
+    addAndMakeVisible(reverbWetLevelSlider);
+    addAndMakeVisible(reverbWetLevelLabel);
+    addAndMakeVisible(reverbDryLevelSlider);
+    addAndMakeVisible(reverbDryLevelLabel);
+    addAndMakeVisible(reverbWidthSlider);
+    addAndMakeVisible(reverbWidthLabel);
+
     addAndMakeVisible(waveformDisplay);
+
 
     volSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
     volSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
-    volSlider.setLookAndFeel(customLookAndFeel);
     speedSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
     speedSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
-    speedSlider.setLookAndFeel(customLookAndFeel);
     positionSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
     positionSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
-    positionSlider.setLookAndFeel(customLookAndFeel);
+
+    reverbRoomSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    reverbRoomSizeSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
+    reverbDampingSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    reverbDampingSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
+    reverbWetLevelSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    reverbWetLevelSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
+    reverbDryLevelSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    reverbDryLevelSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
+    reverbWidthSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    reverbWidthSlider.setTextBoxStyle(Slider::NoTextBox, false, 80, 14);
 
     // Font labelFont = Font(BinaryData::SmoochSansMedium_ttf);
     // labelFont.setHeight(12.0f);
@@ -51,12 +71,27 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     positionDialLabel.setJustificationType(Justification::centred);
 	// positionDialLabel.setFont(labelFont);
 
+    reverbRoomSizeLabel.setJustificationType(Justification::centred);
+    reverbDampingLabel.setJustificationType(Justification::centred);
+    reverbWetLevelLabel.setJustificationType(Justification::centred);
+    reverbDryLevelLabel.setJustificationType(Justification::centred);
+    reverbWidthLabel.setJustificationType(Justification::centred);
+
+
     playButton.addListener(this);
     stopButton.addListener(this);
     loadButton.addListener(this);
+
     volSlider.addListener(this);
     speedSlider.addListener(this);
     positionSlider.addListener(this);
+
+    reverbRoomSizeSlider.addListener(this);
+    reverbDampingSlider.addListener(this);
+    reverbWetLevelSlider.addListener(this);
+    reverbDryLevelSlider.addListener(this);
+    reverbWidthSlider.addListener(this);
+
 
     volSlider.setRange(0.0, 1.0);
     volSlider.setSkewFactor(0.5);   // make it easier to set lower values
@@ -64,6 +99,17 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     speedSlider.setRange(0.0, 2.0);
     speedSlider.setValue(1.0);
     positionSlider.setRange(0.0, 1.0);
+
+    reverbRoomSizeSlider.setRange(0.0, 1.0);
+    reverbRoomSizeSlider.setValue(0.5);
+    reverbDampingSlider.setRange(0.0, 1.0);
+    reverbDampingSlider.setValue(0.5);
+    reverbWetLevelSlider.setRange(0.0, 1.0);
+    reverbWetLevelSlider.setValue(0.33);
+    reverbDryLevelSlider.setRange(0.0, 1.0);
+    reverbDryLevelSlider.setValue(0.4);
+    reverbWidthSlider.setRange(0.0, 1.0);
+    reverbWidthSlider.setValue(1.0);
 
 
     startTimer(1000);
@@ -135,7 +181,7 @@ void DeckGUI::resized()
     // Divide the area into 3 columns:   buttons, dials, waveform display
     auto bounds = getLocalBounds();
     auto buttonsBounds = bounds.removeFromLeft(buttonWidthPx);
-    auto dialsBounds = bounds.removeFromLeft(dialWidthPx * 2);
+    auto dialsBounds = bounds.removeFromLeft(dialWidthPx * 4);
     waveformDisplay.setBounds(bounds.reduced(buttonMargin));
 
     // Each button takes one third of the height, with a margin
@@ -143,10 +189,15 @@ void DeckGUI::resized()
     stopButton.setBounds(buttonsBounds.removeFromTop(buttonHeight).reduced(buttonMargin));
     loadButton.setBounds(buttonsBounds.reduced(buttonMargin));
 
-    // Divide the dials area into two equal columns
+    // Divide the dials area into two columns of standard width (playback control)...
     auto dialsFirstColumnBounds = dialsBounds.removeFromLeft(dialWidthPx);
-    auto dialsSecondColumnBounds = dialsBounds;
+    auto dialsSecondColumnBounds = dialsBounds.removeFromLeft(dialWidthPx);
+    // And three columns of reduced width (reverb control)
+    auto dialsThirdColumnBounds = dialsBounds.removeFromLeft(dialsBounds.getWidth() / 3);
+    auto dialsFourthColumnBounds = dialsBounds.removeFromLeft(dialsBounds.getWidth() / 2);
+    auto dialsFifthColumnBounds = dialsBounds;
 
+    // [ Playback control ]
     // Each dial takes half the height of the column
     auto dialNum1Bounds = dialsFirstColumnBounds.removeFromTop(dialsFirstColumnBounds.getHeight() / 2);
     auto dialNum2Bounds = dialsFirstColumnBounds;
@@ -159,6 +210,29 @@ void DeckGUI::resized()
     speedDialLabel.setBounds(dialNum2Bounds);
     positionSlider.setBounds(dialNum3Bounds.removeFromTop(dialNum3Bounds.getHeight() * (1 - dialLabelHeightRatio)));
     positionDialLabel.setBounds(dialNum3Bounds);
+
+    // [ Reverb control ]
+    // Compress height headroom
+    dialsThirdColumnBounds = dialsThirdColumnBounds.reduced(0, dialsThirdColumnBounds.getHeight() * 0.1);
+    dialsFourthColumnBounds = dialsFourthColumnBounds.reduced(0, dialsFourthColumnBounds.getHeight() * 0.1);
+    dialsFifthColumnBounds = dialsFifthColumnBounds.reduced(0, dialsFifthColumnBounds.getHeight() * 0.1);
+    // Each dial takes half the height of the column
+    auto dialNum4Bounds = dialsThirdColumnBounds.removeFromTop(dialsThirdColumnBounds.getHeight() / 2);
+    auto dialNum5Bounds = dialsThirdColumnBounds;
+    auto dialNum6Bounds = dialsFourthColumnBounds.reduced(0, dialsFourthColumnBounds.getHeight() / 4);
+    auto dialNum7Bounds = dialsFifthColumnBounds.removeFromTop(dialsFifthColumnBounds.getHeight() / 2);
+    auto dialNum8Bounds = dialsFifthColumnBounds;
+
+    reverbRoomSizeSlider.setBounds(dialNum4Bounds.removeFromTop(dialNum4Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    reverbRoomSizeLabel.setBounds(dialNum4Bounds);
+    reverbDampingSlider.setBounds(dialNum5Bounds.removeFromTop(dialNum5Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    reverbDampingLabel.setBounds(dialNum5Bounds);
+    reverbWidthSlider.setBounds(dialNum6Bounds.removeFromTop(dialNum6Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    reverbWidthLabel.setBounds(dialNum6Bounds);
+    reverbWetLevelSlider.setBounds(dialNum7Bounds.removeFromTop(dialNum7Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    reverbWetLevelLabel.setBounds(dialNum7Bounds);
+    reverbDryLevelSlider.setBounds(dialNum8Bounds.removeFromTop(dialNum8Bounds.getHeight() * (1 - dialLabelHeightRatio)));
+    reverbDryLevelLabel.setBounds(dialNum8Bounds);
 
 
     // waveformDisplay.setBounds(buttonWidthPx + dialWidthPx * 2, 0, getWidth() - buttonWidthPx - dialWidthPx * 2, getHeight());
