@@ -104,6 +104,36 @@ void DJAudioPlayer::setPositionRelative(float newPositionRatio)
         double positionSecs = transportSource.getLengthInSeconds() * newPositionRatio;
         transportSource.setPosition(positionSecs);
     }
+}
+
+void DJAudioPlayer::setReverbRoomSize(float newRoomSize)
+{
+	reverbParameters.roomSize = newRoomSize;
+	reverbSource.setParameters(reverbParameters);
+};
+
+void DJAudioPlayer::setReverbDamping(float newDamping)
+{
+    reverbParameters.damping = newDamping;
+    reverbSource.setParameters(reverbParameters);
+};
+
+void DJAudioPlayer::setReverbWetLevel(float newWetLevel)
+{
+    reverbParameters.wetLevel = newWetLevel;
+    reverbSource.setParameters(reverbParameters);
+};
+
+void DJAudioPlayer::setReverbDryLevel(float newDryLevel)
+{
+    reverbParameters.dryLevel = newDryLevel;
+    reverbSource.setParameters(reverbParameters);
+};
+
+void DJAudioPlayer::setReverbWidth(float newWidth)
+{
+    reverbParameters.width = newWidth;
+    reverbSource.setParameters(reverbParameters);
 };
 
 

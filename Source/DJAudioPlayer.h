@@ -32,6 +32,12 @@ public:
     void setPosition(float newPositionSecs);
     void setPositionRelative(float newPositionRatio);
 
+    void setReverbRoomSize(float newRoomSize);
+	void setReverbDamping(float newDamping);
+    void setReverbWetLevel(float newWetLevel);
+	void setReverbDryLevel(float newDryLevel);
+	void setReverbWidth(float newWidth);
+
     void start();
     void stop();
 

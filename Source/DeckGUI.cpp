@@ -299,6 +299,31 @@ void DeckGUI::sliderValueChanged(Slider* slider)
 		audioPlayer->setPositionRelative(slider->getValue());
 	}
 
+    if (slider == &reverbRoomSizeSlider)
+	{
+		audioPlayer->setReverbRoomSize(slider->getValue());
+	}
+
+    if (slider == &reverbDampingSlider)
+    {
+        audioPlayer->setReverbDamping(slider->getValue());
+    }
+
+    if (slider == &reverbWetLevelSlider)
+    {
+        audioPlayer->setReverbWetLevel(slider->getValue());
+    }
+
+    if (slider == &reverbDryLevelSlider)
+    {
+        audioPlayer->setReverbDryLevel(slider->getValue());
+    }
+
+    if (slider == &reverbWidthSlider)
+    {
+        audioPlayer->setReverbWidth(slider->getValue());
+    }
+
 }
 
 
