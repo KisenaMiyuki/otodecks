@@ -41,6 +41,9 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     addAndMakeVisible(reverbWidthSlider);
     addAndMakeVisible(reverbWidthLabel);
 
+    addAndMakeVisible(reverbSectionTitleLabel);
+    addAndMakeVisible(sectionSeparator);
+
     addAndMakeVisible(waveformDisplay);
 
 
@@ -77,6 +80,8 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     reverbDryLevelLabel.setJustificationType(Justification::centred);
     reverbWidthLabel.setJustificationType(Justification::centred);
 
+    reverbSectionTitleLabel.setJustificationType(Justification::centred);
+
 
     playButton.addListener(this);
     stopButton.addListener(this);
@@ -105,7 +110,7 @@ DeckGUI::DeckGUI(DJAudioPlayer* player, AudioFormatManager *format_manager, Audi
     reverbDampingSlider.setRange(0.0, 1.0);
     reverbDampingSlider.setValue(0.5);
     reverbWetLevelSlider.setRange(0.0, 1.0);
-    reverbWetLevelSlider.setValue(0.33);
+    reverbWetLevelSlider.setValue(0);
     reverbDryLevelSlider.setRange(0.0, 1.0);
     reverbDryLevelSlider.setValue(0.4);
     reverbWidthSlider.setRange(0.0, 1.0);
@@ -154,6 +159,9 @@ void DeckGUI::paint (juce::Graphics& g)
     g.fillRect(getLocalBounds().removeFromBottom(cornerStrokeWeightPx).removeFromRight(cornerStrokeLengthPx));
     g.fillRect(getLocalBounds().removeFromRight(cornerStrokeWeightPx).removeFromBottom(cornerStrokeLengthPx));
 
+
+    g.drawRect(sectionSeparator.getLocalBounds(), 2);
+
  //    g.drawRect(volSlider.getBounds(), 1);
  //    g.drawRect(volDialLabel.getBounds(), 1);
 	// g.drawRect(speedSlider.getBounds(), 1);
@@ -193,6 +201,14 @@ void DeckGUI::resized()
     auto dialsFirstColumnBounds = dialsBounds.removeFromLeft(dialWidthPx);
     auto dialsSecondColumnBounds = dialsBounds.removeFromLeft(dialWidthPx);
     // And three columns of reduced width (reverb control)
+    // Section title spans all three columns
+    auto reverbSectionTitleBounds = dialsBounds;
+    reverbSectionTitleBounds = reverbSectionTitleBounds.removeFromTop(reverbSectionTitleBounds.getHeight() / 6);
+    reverbSectionTitleLabel.setBounds(reverbSectionTitleBounds);
+    auto sectionSeparatorBounds = dialsBounds;
+	sectionSeparatorBounds = sectionSeparatorBounds.removeFromLeft(2);
+    sectionSeparator.setBounds(sectionSeparatorBounds);
+
     auto dialsThirdColumnBounds = dialsBounds.removeFromLeft(dialsBounds.getWidth() / 3);
     auto dialsFourthColumnBounds = dialsBounds.removeFromLeft(dialsBounds.getWidth() / 2);
     auto dialsFifthColumnBounds = dialsBounds;

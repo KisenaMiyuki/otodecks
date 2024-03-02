@@ -68,6 +68,9 @@ private:
     Slider reverbWidthSlider;
     Label reverbWidthLabel{ "reverbWidthLabel", "WDTH" };
 
+    Label reverbSectionTitleLabel{ "reverbSectionTitleLabel", "REVERB" };
+    Label sectionSeparator;
+
     WaveformDisplay waveformDisplay;
 
 

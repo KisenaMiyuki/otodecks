@@ -18,24 +18,29 @@ CustomLookAndFeel::CustomLookAndFeel()
     const Colour accentColour = Colour::Colour(185, 139, 247);
 
 
-    // Set the general background colour
+    // General background colors
 	setColour(ResizableWindow::backgroundColourId, backgroundColour);
     setColour(HyperlinkButton::textColourId, accentColour);             // Random colour id to hold the accent colour
 
-	// Set the colours for the slider
+	// Slider colors
 	setColour(Slider::rotarySliderFillColourId, foregroundColour);
 	setColour(Slider::rotarySliderOutlineColourId, Colour::Colour());
     setColour(Slider::thumbColourId, backgroundColour);
 
-    // Set the colours for the buttons
+    // Button colors
     setColour(TextButton::buttonColourId, foregroundColour);
     setColour(TextButton::buttonOnColourId, Colour::Colour(0, 0, 0));
     setColour(TextButton::textColourOffId, Colour::Colour(backgroundColour));
     setColour(TextButton::textColourOnId, Colour::Colour(255, 255, 255));
 
-    // Set the colours for the labels
+    // Labels colors
     setColour(Label::textColourId, foregroundColour);
 
+    // Table colors
+    setColour(TableHeaderComponent::backgroundColourId, foregroundColour);
+    setColour(TableHeaderComponent::outlineColourId, backgroundColour);
+    setColour(TableHeaderComponent::highlightColourId, foregroundColour);
+    setColour(TableHeaderComponent::textColourId, backgroundColour);
 
     // Set default font
 	// setDefaultSansSerifTypeface(smoochsansMedium);
@@ -120,6 +125,7 @@ void CustomLookAndFeel::drawRotarySlider(Graphics& g, int x, int y, int width, i
     g.strokePath(markerPath, PathStrokeType(markerWidth, PathStrokeType::curved, PathStrokeType::rounded));
 }
 
+
 void CustomLookAndFeel::drawButtonBackground(Graphics& g,
                                              Button& button,
                                              const Colour& backgroundColour,
@@ -195,4 +201,53 @@ void CustomLookAndFeel::drawButtonBackground(Graphics& g,
         // Draw a rounded rectangle with the outline colour
         // g.drawRoundedRectangle(bounds, cornerSize, 1.0f);
     }
+}
+
+
+void CustomLookAndFeel::drawTableHeaderBackground(Graphics& g, TableHeaderComponent& header)
+{
+    auto r = header.getLocalBounds();
+
+    // g.setColour(outlineColour);
+    // g.fillRect(r.removeFromBottom(1));
+
+    g.setColour(header.findColour(TableHeaderComponent::backgroundColourId));
+    g.fillRect(r);
+
+    g.setColour(header.findColour(TableHeaderComponent::outlineColourId));
+
+    for (int i = header.getNumColumns(true); --i >= 0;)
+        g.fillRect(header.getColumnPosition(i).removeFromRight(1).reduced(0, 5));
+}
+
+
+void CustomLookAndFeel::drawTableHeaderColumn(Graphics& g, TableHeaderComponent& header,
+										      const String& columnName, int /*columnId*/,
+										      int width, int height, bool isMouseOver, bool isMouseDown,
+										      int columnFlags)
+{
+    auto highlightColour = header.findColour(TableHeaderComponent::highlightColourId);
+
+    if (isMouseDown)
+        g.fillAll(highlightColour.withBrightness(0.2f));
+    else if (isMouseOver)
+        g.fillAll(highlightColour.withBrightness(0.35f));
+
+    Rectangle<int> area(width, height);
+    area.reduce(4, 0);
+
+    if ((columnFlags & (TableHeaderComponent::sortedForwards | TableHeaderComponent::sortedBackwards)) != 0)
+    {
+        Path sortArrow;
+        sortArrow.addTriangle(0.0f, 0.0f,
+            0.5f, (columnFlags & TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
+            1.0f, 0.0f);
+
+        g.setColour(Colour(0x99000000));
+        g.fillPath(sortArrow, sortArrow.getTransformToScaleToFit(area.removeFromRight(height / 2).reduced(2).toFloat(), true));
+    }
+
+    g.setColour(header.findColour(TableHeaderComponent::textColourId));
+    g.setFont(Font((float)height * 0.5f, Font::bold));
+    g.drawFittedText(columnName, area, Justification::centredLeft, 1);
 }
