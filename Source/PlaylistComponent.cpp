@@ -75,31 +75,38 @@ void PlaylistComponent::paintRowBackground(juce::Graphics& g, int rowNumber, int
 {
     if (rowIsSelected)
     {
-        g.fillAll(juce::Colours::lightblue);
+        g.fillAll(findColour(Slider::rotarySliderFillColourId));
     }
     else
     {
-        g.fillAll(juce::Colours::darkgrey);
+        g.fillAll(findColour(ResizableWindow::backgroundColourId));
     }
+
+    // Draw lines on side of row
+	g.setColour(findColour(Slider::rotarySliderFillColourId));
+    g.fillRect(getLocalBounds().removeFromLeft(2));
+    g.fillRect(getLocalBounds().removeFromRight(2));
 }
 
 void PlaylistComponent::paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
     if (rowIsSelected)
     {
-	    g.setColour(juce::Colours::black);
+	    g.setColour(findColour(ResizableWindow::backgroundColourId));
 	}
 	else
 	{
-        g.setColour(juce::Colours::white);
+        g.setColour(findColour(Slider::rotarySliderFillColourId));
 	}
 
     g.setFont(14.0f);
+    // Set font style bold
+	g.setFont(g.getCurrentFont().withStyle(juce::Font::bold));
 
 
     if (columnId == 1)
     {
-        g.drawText(playlistVector[rowNumber], 2, 0, width - 4, height, juce::Justification::centredLeft, true);
+        g.drawText(playlistVector[rowNumber], 4, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
     else if (columnId == 2)
     {
